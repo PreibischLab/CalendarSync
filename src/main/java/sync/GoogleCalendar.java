@@ -284,7 +284,7 @@ public class GoogleCalendar implements ListMyEvents< Event >
 				new InputStreamReader(
 					new FileInputStream(
 						new File(
-							"client_secred_microscopycalendar.json"))));
+							"client_secret_google.json"))));
 
 		// set up authorization code flow
 		GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder( httpTransport,
