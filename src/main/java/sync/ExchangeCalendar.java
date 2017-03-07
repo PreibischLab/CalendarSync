@@ -65,6 +65,7 @@ public class ExchangeCalendar implements ListMyEvents< Appointment >
 		try
 		{
 			//final FindItemsResults< Appointment > exchangeEvens = findAppointmentsMainCalendar( service, startDate, endDate );
+			//final FindItemsResults< Appointment > exchangeEvens = findAppointmentsDelegate( service, "AG_Preibisch_Cal@mdc-berlin.de", startDate, endDate );
 			final FindItemsResults< Appointment > exchangeEvens = findAppointmentsDelegate( service, "Bimsb.Calendar@mdc-berlin.de", startDate, endDate );
 
 			for ( final Appointment appt : exchangeEvens.getItems() )
@@ -103,7 +104,7 @@ public class ExchangeCalendar implements ListMyEvents< Appointment >
 
 		for ( final MyEvent< Appointment > e : c.allEvents( startDate, endDate ) )
 			System.out.println( e );
-
+		/*
 		for ( final Appointment appt : findAppointmentsMainCalendar( c.service, startDate, endDate ).getItems() )
 		{
 			appt.load();
@@ -120,8 +121,8 @@ public class ExchangeCalendar implements ListMyEvents< Appointment >
 		    calendar.setTime( appt.getEnd() ); 
 		    System.out.println( calendar.get(Calendar.HOUR_OF_DAY) + " " + calendar.get(Calendar.MINUTE ) + " " + calendar.get(Calendar.SECOND) );
 		}
-		/*
-		for ( final Appointment appt : findAppointmentsDelegate( service, "Bimsb.Calendar@mdc-berlin.de", startDate, endDate ).getItems() )
+
+		for ( final Appointment appt : findAppointmentsDelegate( c.service, "Bimsb.Calendar@mdc-berlin.de", startDate, endDate ).getItems() )
 		{
 			appt.load();
 			System.out.println("SUBJECT====="+appt.getSubject());

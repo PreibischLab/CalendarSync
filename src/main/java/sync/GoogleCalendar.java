@@ -267,7 +267,7 @@ public class GoogleCalendar implements ListMyEvents< Event >
 	public static CalendarListEntry getBIMSBCalendar( CalendarList feed )
 	{
 		for ( final CalendarListEntry s : feed.getItems() )
-			if ( s.getSummary().toLowerCase().startsWith( "bimsb calendar" ) )
+			if ( s.getSummary().toLowerCase().startsWith( "bimsb calendar" ) ) //if ( s.getSummary().toLowerCase().startsWith( "preibisch lab" ) ) 
 				return s;
 
 		return null;
