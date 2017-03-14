@@ -18,11 +18,28 @@ public class SyncCalendars
 		Date startDate = MyEvent.parseDate( "2017-02-27 17:30:00" );
 		Date endDate = MyEvent.parseDate( "2017-12-31 23:30:00" );
 
+		final ArrayList< MyEvent< Appointment > > eEventList = ec.allEvents( startDate, endDate );
+		final ArrayList< MyEvent< Event > > gEventList = gc.allEvents( startDate, endDate );
+
 		final HashSet< MyEvent< Appointment > > eEvents = new HashSet< MyEvent< Appointment > >();
 		final HashSet< MyEvent< Event > > gEvents = new HashSet< MyEvent< Event > >();
 
-		eEvents.addAll( ec.allEvents( startDate, endDate ) );
-		gEvents.addAll( gc.allEvents( startDate, endDate ) );
+		eEvents.addAll( eEventList );
+
+		// double entries to be deleted
+		final ArrayList< Event > deleteDoubles = new ArrayList< Event >();
+
+		// add and filter for double-events
+		for ( final MyEvent< Event > ge : gEventList )
+		{
+			if ( gEvents.contains( ge ) )
+				deleteDoubles.add( ge.object );
+			else
+				gEvents.add( ge );
+		}
+
+		System.out.println( "double entries in google calendar (will be deleted): " + deleteDoubles.size() );
+		gc.deleteEventsBatch( deleteDoubles );
 
 		System.out.println( "Exchange calendar events (" + eEvents.size() + " in total):" );
 		for ( final MyEvent< Appointment > e : eEvents )
