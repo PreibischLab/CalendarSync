@@ -179,20 +179,34 @@ public class GoogleCalendar implements ListMyEvents< Event >
 		try
 		{
 			final ArrayList< MyEvent< Event > > events = new ArrayList< MyEvent< Event > >();
-			final Events googleEvents = client.events().list( bimsbCal.getId() ).setTimeMin( new DateTime( startDate ) ).setTimeMax( new DateTime( endDate ) ).execute();
-
-			for ( final Event e : googleEvents.getItems() )
+			Events googleEvents = client.events().list( bimsbCal.getId() ).setTimeMin( new DateTime( startDate ) ).setTimeMax( new DateTime( endDate ) ).execute();
+	
+			do
 			{
-				events.add(
-					new MyEvent< Event >(
-						e.getSummary(),
-						e.getLocation(),
-						getStart( e ),
-						getEnd( e ),
-						isAllDay( e ),
-						e.getDescription(),
-						e ) );
+				//final Events googleEvents = client.events().list( bimsbCal.getId() ).setTimeMin( new DateTime( startDate ) ).setTimeMax( new DateTime( endDate ) ).execute();
+				//System.out.println( googleEvents.getItems().size() + " " + googleEvents.getNextPageToken() );
+
+				for ( final Event e : googleEvents.getItems() )
+				{
+					events.add(
+						new MyEvent< Event >(
+							e.getSummary(),
+							e.getLocation(),
+							getStart( e ),
+							getEnd( e ),
+							isAllDay( e ),
+							e.getDescription(),
+							e ) );
+				}
+
+				if ( googleEvents.getNextPageToken() == null )
+					googleEvents = null;
+				else
+					googleEvents = client.events().list( bimsbCal.getId() ).setTimeMin( new DateTime( startDate ) ).setTimeMax( new DateTime( endDate ) ).setPageToken( googleEvents.getNextPageToken() ).execute();
 			}
+			while( googleEvents != null );
+
+			//System.out.println( events.size() );
 
 			return events;
 		}
